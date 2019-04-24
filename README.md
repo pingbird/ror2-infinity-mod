@@ -7,7 +7,7 @@
 - Unizp into RoR2 install directory
 
 ## Building from source
-- Install meepen's RoR2 modloader ([thunderstore.io](https://thunderstore.io/package/meepen/Meepens_Mod_Loader/) [github](https://github.com/meepen/ror2-modloader))
+- Install Meepen's RoR2 modloader ([thunderstore.io](https://thunderstore.io/package/meepen/Meepens_Mod_Loader/) [github](https://github.com/meepen/ror2-modloader))
 - Download [premake5](https://github.com/premake/premake-core/releases)
 - Run `premake5 vs2017` (for vs2017)
 - Open the solution in the `project` folder
