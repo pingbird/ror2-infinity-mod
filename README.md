@@ -47,29 +47,29 @@ _note: base stats reset every level_
 
 Chests:
 
-- **chest_unlock** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Prevent interactables from being locked while teleporter is active (Host only)
-- **chest_stacks** [value] &nbsp;&nbsp;-&nbsp;&nbsp; How many duplicate items chests will drop (Host only)
+- **chest_unlock** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Prevent interactables from being locked while teleporter is active (Host only)
+- **chest_stacks** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; How many duplicate items chests will drop (Host only)
 
 Teleporter:
 
-- **tele_speed** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Speed multiplier for teleporter charging (Host only)
-- **tele_boss_stacks** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Boss credit multiplier from mountain shrines (Host only)
-- **tele_shop_portal** [value] &nbsp;&nbsp;-&nbsp;&nbsp; If a blue portal should spawn (Host only)
-- **tele_gold_portal** [value] &nbsp;&nbsp;-&nbsp;&nbsp; If a gold portal should spawn (Host only)
-- **tele_ms_portal** [value] &nbsp;&nbsp;-&nbsp;&nbsp; If a celestial portal should spawn (Host only)
+- **tele_speed** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Speed multiplier for teleporter charging (Host only)
+- **tele_boss_stacks** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Boss credit multiplier from mountain shrines (Host only)
+- **tele_shop_portal** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; If a blue portal should spawn (Host only)
+- **tele_gold_portal** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; If a gold portal should spawn (Host only)
+- **tele_ms_portal** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; If a celestial portal should spawn (Host only)
 - **tele_ping** &nbsp;&nbsp;-&nbsp;&nbsp; Reveals position of teleporter
 - **tele_exit** &nbsp;&nbsp;-&nbsp;&nbsp; Teleport to next level immediately (Host only)
 
 Level:
 
-- **level_intr_stacks** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Interactable credit multiplier, spawns more stuff around the map (Host only)
-- **level_monster_stacks** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Monster credit multiplier, spawns harder enemies (Host only)
+- **level_intr_stacks** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Interactable credit multiplier, spawns more stuff around the map (Host only)
+- **level_monster_stacks** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Monster credit multiplier, spawns harder enemies (Host only)
 
 Lobby:
 
-- **lobby_join_delay** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Delay before your quickplay lobby is open to join
-- **lobby_start_delay** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Delay before your quickplay lobby starts when someone joins
-- **lobby_host_min** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Minimum players in your lobby before you won't join someone else's lobby, set to 1 if you always want to be the host
+- **lobby_join_delay** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Delay before your quickplay lobby is open to join
+- **lobby_start_delay** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Delay before your quickplay lobby starts when someone joins
+- **lobby_host_min** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Minimum players in your lobby before you won't join someone else's lobby, set to 1 if you always want to be the host
 
 ## Hooks
 
