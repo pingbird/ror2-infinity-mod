@@ -54,6 +54,7 @@ Teleporter:
 
 - **tele_speed** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Speed multiplier for teleporter charging (Host only)
 - **tele_boss_stacks** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Boss credit multiplier from mountain shrines (Host only)
+- **tele_reward_stacks** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Boss item reward multiplier (Host only)
 - **tele_shop_portal** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; If a blue portal should spawn (Host only)
 - **tele_gold_portal** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; If a gold portal should spawn (Host only)
 - **tele_ms_portal** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; If a celestial portal should spawn (Host only)
@@ -82,5 +83,6 @@ Lobby:
 * **RoR2.ChestBehavior.ItemDrop** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_stacks**
 * **RoR2.TeleporterInteraction.OnStateChanged** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_unlock**
 * **RoR2.TeleporterInteraction.StateFixedUpdate** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **tele_speed**
+* **RoR2.BossGroup.OnCharacterDeathCallback** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **tele_reward_stacks**
 * **RoR2.SceneDirector.Start** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **level_intr_stacks** and **evel_monster_stacks**
 * **RoR2.Networking.SteamLobbyFinder.Awake** (Postfix) &nbsp;&nbsp;-&nbsp;&nbsp; Passive hook for **lobby_join_delay** and **lobby_start_delay**
