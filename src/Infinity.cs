@@ -63,10 +63,9 @@ namespace InfinityMod {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class InVarName : Attribute {
         public string Name;
-        public bool Local = false;
         public bool User = false;
-        public PermFlags Perms = PermFlags.None;
-        public PermFlags ExPerms = PermFlags.Admin;
+        public PermFlags Perms = PermFlags.Admin;
+        public PermFlags ExPerms = PermFlags.Host;
         public InVarName(string name) {
             Name = name;
         }
@@ -76,9 +75,9 @@ namespace InfinityMod {
     public class InCmd : Attribute {
         public string Name;
         public string Hint = "";
-        public bool Local = false;
         public bool User = false;
-        public PermFlags Perms;
+        public PermFlags Perms = PermFlags.Admin;
+        public PermFlags ExPerms = PermFlags.Host;
         public InCmd(string name) {
             Name = name;
         }

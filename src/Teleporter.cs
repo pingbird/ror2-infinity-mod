@@ -12,7 +12,7 @@ using Harmony;
 
 namespace InfinityMod {
     class TeleporterExtension : InfinityExtension {
-        [InVarName("tele_speed", Perms = PermFlags.Admin)]
+        [InVarName("tele_speed")]
         class TeleSpeedInVar : InVar {
             public static float Speed = 1.0f;
             public override string Get(NetworkUser user) {
@@ -24,7 +24,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("tele_boss_stacks", Perms = PermFlags.Admin)]
+        [InVarName("tele_boss_stacks")]
         class TeleBossStacksInVar : InVar {
             public override string Get(NetworkUser user) {
                 return TeleporterInteraction.instance.shrineBonusStacks.ToString();
@@ -35,7 +35,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("tele_award_stacks", Perms = PermFlags.Admin)]
+        [InVarName("tele_award_stacks")]
         class TeleAwardInVar : InVar {
             public static int Value = 1;
             public override string Get(NetworkUser user) {
@@ -47,7 +47,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("tele_shop_portal", Perms = PermFlags.Admin)]
+        [InVarName("tele_shop_portal")]
         class TeleShopPortalInVar : InVar {
             public override string Get(NetworkUser user) {
                 return TeleporterInteraction.instance.shouldAttemptToSpawnShopPortal ? "1" : "0";
@@ -58,7 +58,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("tele_gold_portal", Perms = PermFlags.Admin)]
+        [InVarName("tele_gold_portal")]
         class TeleGoldPortalInVar : InVar {
             public override string Get(NetworkUser user) {
                 return TeleporterInteraction.instance.shouldAttemptToSpawnGoldshoresPortal ? "1" : "0";
@@ -69,7 +69,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("tele_ms_portal", Perms = PermFlags.Admin)]
+        [InVarName("tele_ms_portal")]
         class TeleMSPortalInVar : InVar {
             public override string Get(NetworkUser user) {
                 return TeleporterInteraction.instance.shouldAttemptToSpawnMSPortal ? "1" : "0";
@@ -80,12 +80,9 @@ namespace InfinityMod {
             }
         }
 
-        [InCmd("tele_ping", User = true, Perms = PermFlags.Admin)]
+        [InCmd("tele_ping", User = true)]
         private static void TelePingCmd(ConCommandArgs args) {
             var ctrl = args.sender.master.GetComponent<PingerController>();
-            if (ctrl == null) {
-                Debug.Log("No pinger controller :(");
-            }
             var tele = TeleporterInteraction.instance;
             PingerController.PingInfo pingInfo = new PingerController.PingInfo {
 				active = true,
@@ -95,7 +92,7 @@ namespace InfinityMod {
             typeof(PingerController).GetMethod("SetCurrentPing", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(ctrl, new object[] { pingInfo });
         }
 
-        [InCmd("tele_exit", User = true, Perms = PermFlags.Admin)]
+        [InCmd("tele_exit")]
         private static void TeleExitCmd(ConCommandArgs args) {
             TeleporterInteraction.instance.GetComponent<SceneExitController>().Begin();
         }
@@ -207,7 +204,6 @@ namespace InfinityMod {
 
                             var chestLockCoroutine = new Traverse(__instance).Field<Coroutine>("chestLockCoroutine");
                             System.Collections.IEnumerator lockBody() {
-                                Debug.Log("Function patched :poggers:");
 			                    List<GameObject> lockInstances = new List<GameObject>();
 			                    Vector3 myPosition = __instance.transform.position;
 			                    float maxDistanceSqr = __instance.clearRadius * __instance.clearRadius;
