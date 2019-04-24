@@ -35,6 +35,18 @@ namespace InfinityMod {
             }
         }
 
+        [InVarName("tele_award_stacks", Perms = PermFlags.Admin)]
+        class TeleAwardInVar : InVar {
+            public static int Value = 1;
+            public override string Get(NetworkUser user) {
+                return Value.ToString();
+            }
+
+            public override void Set(NetworkUser user, string value) {
+                Value = int.Parse(value);
+            }
+        }
+
         [InVarName("tele_shop_portal", Perms = PermFlags.Admin)]
         class TeleShopPortalInVar : InVar {
             public override string Get(NetworkUser user) {
@@ -87,7 +99,78 @@ namespace InfinityMod {
         private static void TeleExitCmd(ConCommandArgs args) {
             TeleporterInteraction.instance.GetComponent<SceneExitController>().Begin();
         }
-
+        
+        [HarmonyPatch(typeof(BossGroup))]
+        [HarmonyPatch("OnCharacterDeathCallback")]
+        static class BossGroup_OnCharacterDeathCallback_Patch {
+            static bool Prefix(
+                BossGroup __instance,
+                DamageReport damageReport,
+                ref List<PickupIndex> ___bossDrops,
+                ref List<CharacterMaster> ___membersList,
+                ref bool ___defeated,
+                ref Xoroshiro128Plus ___rng
+            ) {
+                if (!NetworkServer.active) {
+				    Debug.LogWarning("[Server] function 'System.Void RoR2.BossGroup::OnCharacterDeathCallback(RoR2.DamageReport)' called on client");
+				    return false;
+			    }
+			    DamageInfo damageInfo = damageReport.damageInfo;
+			    GameObject gameObject = damageReport.victim.gameObject;
+			    CharacterBody component = gameObject.GetComponent<CharacterBody>();
+			    if (!component) return false;
+			    CharacterMaster master = component.master;
+			    if (!master) return false;
+			    DeathRewards component2 = gameObject.GetComponent<DeathRewards>();
+			    if (component2) {
+				    PickupIndex pickupIndex = (PickupIndex)component2.bossPickup;
+				    if (pickupIndex != PickupIndex.none) ___bossDrops.Add(pickupIndex);
+			    }
+			    GameObject victimMasterGameObject = master.gameObject;
+			    int num = ___membersList.FindIndex((CharacterMaster x) => x.gameObject == victimMasterGameObject);
+			    if (num >= 0)
+			    {
+                    typeof(BossGroup).GetMethod("RemoveMemberAt", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { num });
+				    if (!___defeated && ___membersList.Count == 0)
+				    {
+					    Run.instance.OnServerBossKilled(true);
+					    if (component)
+					    {
+						    int participatingPlayerCount = Run.instance.participatingPlayerCount;
+						    if (participatingPlayerCount != 0 && __instance.dropPosition)
+						    {
+							    ItemIndex itemIndex = Run.instance.availableTier2DropList[___rng.RangeInt(0, Run.instance.availableTier2DropList.Count)].itemIndex;
+							    int num2 = TeleAwardInVar.Value * participatingPlayerCount * (1 + (TeleporterInteraction.instance ? TeleporterInteraction.instance.shrineBonusStacks : 0));
+							    float angle = 360f / (float)num2;
+							    Vector3 vector = Quaternion.AngleAxis((float)UnityEngine.Random.Range(0, 360), Vector3.up) * (Vector3.up * 40f + Vector3.forward * 5f);
+							    Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
+							    int i = 0;
+							    while (i < num2)
+							    {
+								    PickupIndex pickupIndex2 = new PickupIndex(itemIndex);
+								    if (___bossDrops.Count > 0 && ___rng.nextNormalizedFloat <= __instance.bossDropChance)
+								    {
+									    pickupIndex2 = ___bossDrops[___rng.RangeInt(0, ___bossDrops.Count)];
+								    }
+								    PickupDropletController.CreatePickupDroplet(pickupIndex2, __instance.dropPosition.position, vector);
+								    i++;
+								    vector = rotation * vector;
+							    }
+						    }
+					    }
+					    ___defeated = true;
+                        typeof(BossGroup).Raise("onBossGroupDefeatedServer", __instance);
+					    return false;
+				    }
+				    else
+				    {
+					    Run.instance.OnServerBossKilled(false);
+                    }
+                }
+                return false;
+            }
+        }
+        
         [HarmonyPatch(typeof(TeleporterInteraction))]
         [HarmonyPatch("OnStateChanged")]
         static class TeleporterInteraction_OnStateChanged_Patch {
@@ -101,7 +184,7 @@ namespace InfinityMod {
                         return false;
                     case 0x02: // TeleporterInteraction.ActivationState.Charging
                     {
-                        Util.RaiseStatic(typeof(TeleporterInteraction), "onTeleporterBeginChargingGlobal", __instance);
+                        typeof(TeleporterInteraction).Raise("onTeleporterBeginChargingGlobal", __instance);
                         if (NetworkServer.active) {
                             if (__instance.bonusDirector) {
                                 __instance.bonusDirector.enabled = true;
@@ -173,12 +256,12 @@ namespace InfinityMod {
                         ___childLocator.FindChild("ChargedEffect").gameObject.SetActive(true);
                         ___childLocator.FindChild("BossShrineSymbol").gameObject.SetActive(false);
                         
-                        Util.RaiseStatic(typeof(TeleporterInteraction), "onTeleporterChargedGlobal", __instance);
+                        typeof(TeleporterInteraction).Raise("onTeleporterChargedGlobal", __instance);
                         return false;
                     }
                     case 0x04: { // TeleporterInteraction.ActivationState.Finished
                         ___childLocator.FindChild("ChargedEffect").gameObject.SetActive(false);
-                        Util.RaiseStatic(typeof(TeleporterInteraction), "onTeleporterFinishGlobal", __instance);
+                        typeof(TeleporterInteraction).Raise("onTeleporterFinishGlobal", __instance);
                         return false;
                     }
                     default:

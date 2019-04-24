@@ -50,9 +50,9 @@ namespace InfinityMod {
 					___monsterCredit = (int)((float)component.sceneDirectorMonsterCredits * Run.instance.difficultyCoefficient) * LevelMonsterInVar.Stacks;
 				}
 
-                Util.RaiseStatic(typeof(SceneDirector), "onPrePopulateSceneServer", __instance);
+                typeof(SceneDirector).Raise("onPrePopulateSceneServer", __instance);
 				new Traverse(__instance).Method("PopulateScene").GetValue();
-                Util.RaiseStatic(typeof(SceneDirector), "onPostPopulateSceneServer", __instance);
+                typeof(SceneDirector).Raise("onPostPopulateSceneServer", __instance);
                 return false;
             }
         }

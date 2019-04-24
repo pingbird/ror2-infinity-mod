@@ -31,7 +31,7 @@ namespace InfinityMod {
             }
         }
 
-        public static void RaiseStatic(Type T, string eventName, params object[] args) {
+        public static void Raise(this Type T, string eventName, params object[] args) {
             var eventDelegate = Traverse.Create(T).Field(eventName).GetValue<MulticastDelegate>();
             if (eventDelegate != null) {
                 foreach (var handler in eventDelegate.GetInvocationList()) {
@@ -188,8 +188,12 @@ namespace InfinityMod {
         [HarmonyPatch(typeof(EntityStates.SurvivorPod.Release))]
         [HarmonyPatch("OnEnter")]
         static class Release_OnEnter_Patch {
-            static void Postfix() {
-		        RoR2.Console.instance.SubmitCmd(null, "exec infinity_pod", false);
+            static void Postfix(EntityStates.SurvivorPod.Release __instance) {
+                var survivorPodController = (SurvivorPodController)typeof(EntityStates.SurvivorPod.SurvivorPodBaseState).GetProperty("survivorPodController", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
+                var characterBody = survivorPodController.characterBodyObject.GetComponent<CharacterBody>();
+                var user = LocalUserManager.GetFirstLocalUser().currentNetworkUser;
+                if (characterBody == user.GetCurrentBody())
+		            RoR2.Console.instance.SubmitCmd(user, "exec infinity_pod", false);
             }
         }
     }
