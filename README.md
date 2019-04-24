@@ -3,7 +3,7 @@
 
 ## Installing
 - Install Meepen's Mod Loader ([thunderstore.io](https://thunderstore.io/package/meepen/Meepens_Mod_Loader/) [github](https://github.com/meepen/ror2-modloader))
-- Download latest release.zip from https://github.com/pxtst/ror2-infinity-mod/releases
+- Download latest release.zip from https://github.com/PixelToast/ror2-infinity-mod/releases
 - Unizp into RoR2 install directory
 
 ## Building from source
@@ -69,7 +69,7 @@ Lobby:
 
 - **lobby_join_delay** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Delay before your quickplay lobby is open to join
 - **lobby_start_delay** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Delay before your quickplay lobby starts when someone joins
-- **lobby_host_min** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Minimum players in your lobby before you won't join someone else's lobby, set to 1 if you never want to join another lobby
+- **lobby_host_min** [value] &nbsp;&nbsp;-&nbsp;&nbsp; Minimum players in your lobby before you won't join someone else's lobby, set to 1 if you always want to be the host
 
 ## Hooks
 
