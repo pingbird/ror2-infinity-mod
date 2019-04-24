@@ -71,10 +71,15 @@ Lobby:
 - **lobby_start_delay** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Delay before your quickplay lobby starts when someone joins
 - **lobby_host_min** [_value_] &nbsp;&nbsp;-&nbsp;&nbsp; Minimum players in your lobby before you won't join someone else's lobby, set to 1 if you always want to be the host
 
+## Configs
+- **Risk of Rain 2_Data\Config\infinity_start.cfg** &nbsp;&nbsp;-&nbsp;&nbsp; executed after infinity loads
+- **Risk of Rain 2_Data\Config\infinity_pod.cfg** &nbsp;&nbsp;-&nbsp;&nbsp; executed after your launch pod opens
+
 ## Hooks
 
 * **RoR2.Console.Awake** (Postfix) &nbsp;&nbsp;-&nbsp;&nbsp; Passive hook to register commands
 * **RoR2.ChestBehavior.ItemDrop** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_stacks**
 * **RoR2.TeleporterInteraction.OnStateChanged** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_unlock**
 * **RoR2.TeleporterInteraction.StateFixedUpdate** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **tele_speed**
-* **RoR2.SceneDirector.Start** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **level_intr_stacks** and l**evel_monster_stacks**
+* **RoR2.SceneDirector.Start** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **level_intr_stacks** and **evel_monster_stacks**
+* **RoR2.Networking.SteamLobbyFinder.Awake** (Postfix) &nbsp;&nbsp;-&nbsp;&nbsp; Passive hook for **lobby_join_delay** and **lobby_start_delay**
