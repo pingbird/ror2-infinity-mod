@@ -1,2 +1,4 @@
 bin/Mods/infinity.dll
 bin/Mods/infinity.pdb
+Risk of Rain 2_Data/Config/infinity_start.cfg
+Risk of Rain 2_Data/Config/infinity_pod.cfg

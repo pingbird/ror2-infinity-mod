@@ -180,6 +180,16 @@ namespace InfinityMod {
                         }
                     }
                 }
+                
+		        RoR2.Console.instance.SubmitCmd(null, "exec infinity_start", false);
+            }
+        }
+
+        [HarmonyPatch(typeof(EntityStates.SurvivorPod.Release))]
+        [HarmonyPatch("OnEnter")]
+        static class Release_OnEnter_Patch {
+            static void Postfix() {
+		        RoR2.Console.instance.SubmitCmd(null, "exec infinity_pod", false);
             }
         }
     }
