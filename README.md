@@ -79,7 +79,7 @@ Lobby:
 ## Hooks
 
 * **RoR2.Console.Awake** (Postfix) &nbsp;&nbsp;-&nbsp;&nbsp; Passive hook to register commands
-* **RoR2.CharacterMotor.Start** (Postfix) &nbsp;&nbsp;-&nbsp;&nbsp; Passive hook to run `infinity_pod.cfg`
+* **EntityStates.SurvivorPod.Release.OnEnter** (Postfix) &nbsp;&nbsp;-&nbsp;&nbsp; Passive hook to run `infinity_pod.cfg`
 * **RoR2.ChestBehavior.ItemDrop** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_stacks**
 * **RoR2.TeleporterInteraction.OnStateChanged** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_unlock**
 * **RoR2.TeleporterInteraction.StateFixedUpdate** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **tele_speed**
