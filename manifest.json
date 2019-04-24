@@ -1,0 +1,9 @@
+{
+    "name": "Infinity_Mod",
+    "description": "A collection of utilities and hacks",
+    "website_url": "",
+    "version_number": "1.0.0",
+    "dependencies": [
+        "meepen-Meepens_Mod_Loader-0.1.1"
+    ]
+}
