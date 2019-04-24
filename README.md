@@ -81,5 +81,5 @@ Lobby:
 * **RoR2.ChestBehavior.ItemDrop** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_stacks**
 * **RoR2.TeleporterInteraction.OnStateChanged** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **chest_unlock**
 * **RoR2.TeleporterInteraction.StateFixedUpdate** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **tele_speed**
-* **RoR2.SceneDirector.Start** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **level_intr_stacks** and l**evel_monster_stacks**
+* **RoR2.SceneDirector.Start** (Prefix) &nbsp;&nbsp;-&nbsp;&nbsp; Full override for **level_intr_stacks** and **evel_monster_stacks**
 * **RoR2.Networking.SteamLobbyFinder.Awake** (Postfix) &nbsp;&nbsp;-&nbsp;&nbsp; Passive hook for **lobby_join_delay** and l**lobby_start_delay**
