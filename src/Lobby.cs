@@ -10,7 +10,7 @@ using Harmony;
 
 namespace InfinityMod {
     class LobbyExtension : InfinityExtension {
-        [InVarName("lobby_join_delay", User = true)]
+        [InCmd("lobby_join_delay", User = true)]
         public class LobbyJoinInVar : InVar {
             public static float Value = 5f;
             public override string Get(NetworkUser user) {
@@ -21,7 +21,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("lobby_start_delay", User = true)]
+        [InCmd("lobby_start_delay", User = true)]
         public class LobbyStartInVar : InVar {
             public static float Value = 20f;
             public override string Get(NetworkUser user) {
@@ -32,7 +32,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("lobby_host_min", User = true)]
+        [InCmd("lobby_host_min", User = true)]
         public class ChestUnlockInVar : InVar {
             public override string Get(NetworkUser user) {
                 var minimumPlayerCount = new Traverse(typeof(SteamworksLobbyManager)).Field<int>("minimumPlayerCount");

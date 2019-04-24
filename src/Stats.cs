@@ -40,13 +40,13 @@ namespace InfinityMod {
                 "baseCrit",
                 "baseArmor",
             }) {
-                var v = new InVarName("stat_" + nm.Substring(4));
+                var v = new InCmd("stat_" + nm.Substring(4));
                 v.User = true;
                 Infinity.registerVar(v, new BaseFloatInVar(nm));
             }
         }
 
-        [InVarName("stat_jumpcount", User = true)]
+        [InCmd("stat_jumpcount", User = true)]
         class BaseJumpInVar : InVar {
             public override string Get(NetworkUser user) {
                 var b = user.GetCurrentBody();
@@ -61,7 +61,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("lunar", User = true)]
+        [InCmd("lunar", User = true)]
         class LunarInVar : InVar {
             public override string Get(NetworkUser user) {
                 return user.lunarCoins.ToString();
@@ -78,7 +78,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("money", User = true, Perms = PermFlags.Trusted)]
+        [InCmd("money", User = true, Perms = PermFlags.Trusted)]
         class MoneyInVar : InVar {
             public override string Get(NetworkUser user) {
                 return user.master.money.ToString();
@@ -90,22 +90,22 @@ namespace InfinityMod {
         }
 
         [InCmd("team_money", Perms = PermFlags.Admin)]
-        private static void CmdTeamMoney(ConCommandArgs args) {
+        private static void CmdTeamMoney(InCmdResult res, InCmdArgs args) {
             var user = LocalUserManager.GetFirstLocalUser();
 
             if (user.currentNetworkUser == null) {
-                Debug.LogFormat("Not in-game");
+                res.Error = "Error: Not in-game";
                 return;
             }
 
-            if (args.Count != 1) {
-                Debug.LogWarning("Error: One parameter expected");
+            if (args.Length != 1) {
+                res.Error = "Error: One parameter expected";
                 return;
             }
 
             var n = uint.Parse(args[0]);
             TeamManager.instance.GiveTeamMoney(TeamIndex.Player, n);
-            Debug.LogFormat("Gave all players ${0}", n);
+            res.Add("Gave all players $" + n);
         }
     }
 }

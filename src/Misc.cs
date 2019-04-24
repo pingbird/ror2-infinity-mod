@@ -10,7 +10,7 @@ using Harmony;
 
 namespace InfinityMod {
     class MiscExtension : InfinityExtension {
-        [InVarName("modded", User = true)]
+        [InCmd("modded", User = true)]
         class ModdedInVar : InVar {
             public override string Get(NetworkUser user) {
                 return RoR2Application.isModded ? "1" : "0";

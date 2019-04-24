@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 namespace InfinityMod {
     class ChestsExtension : InfinityExtension {
-        [InVarName("chest_unlock")]
+        [InCmd("chest_unlock")]
         public class ChestUnlockInVar : InVar {
             public static bool Unlock = false;
 
@@ -24,7 +24,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("chest_stacks")]
+        [InCmd("chest_stacks")]
         public class ChestStacksInVar : InVar {
             public static int Stacks = 1;
             public override string Get(NetworkUser user) {

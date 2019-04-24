@@ -10,7 +10,7 @@ using Harmony;
 
 namespace InfinityMod {
     class LevelExtension : InfinityExtension {
-        [InVarName("level_intr_stacks")]
+        [InCmd("level_intr_stacks")]
         public class LevelIntrInVar : InVar {
             public static int Stacks = 1;
             public override string Get(NetworkUser user) {
@@ -22,7 +22,7 @@ namespace InfinityMod {
             }
         }
 
-        [InVarName("level_monster_stacks")]
+        [InCmd("level_monster_stacks")]
         public class LevelMonsterInVar : InVar {
             public static int Stacks = 1;
             public override string Get(NetworkUser user) {

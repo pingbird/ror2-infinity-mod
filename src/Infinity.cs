@@ -60,18 +60,30 @@ namespace InfinityMod {
         public static Dictionary<string, PermFlags> flagNamesRev = flagNames.Reverse();
     }
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class InVarName : Attribute {
-        public string Name;
-        public bool User = false;
-        public PermFlags Perms = PermFlags.Admin;
-        public PermFlags ExPerms = PermFlags.Host;
-        public InVarName(string name) {
-            Name = name;
+    public class InCmdResult {
+        public List<String> Result = new List<string>();
+        public String Error;
+
+        public void Add(object x) {
+            Result.Add(x.ToString());
         }
     }
 
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class InCmdArgs {
+        public NetworkUser Sender;
+        public NetworkUser Target;
+        public string[] Args;
+
+        public string this[int i] { get {
+			return this.Args[i];
+        }}
+
+		public int Length { get {
+			return this.Args.Length;
+	    }}
+    }
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = false)]
     public class InCmd : Attribute {
         public string Name;
         public string Hint = "";
@@ -82,13 +94,15 @@ namespace InfinityMod {
             Name = name;
         }
     }
+    
+    public delegate void InCmdDelegate(InCmdResult res, InCmdArgs args);
 
     public abstract class InVar {
         public abstract void Set(NetworkUser user, string value);
         public abstract string Get(NetworkUser user);
     }
 
-    abstract class InfinityExtension {
+    public abstract class InfinityExtension {
         public virtual void Init() { }
     }
 
@@ -97,36 +111,51 @@ namespace InfinityMod {
         public static RoR2.Console console;
         public static HarmonyInstance harmony;
 
-        static void registerCommandDirect(string name, RoR2.Console.ConCommandDelegate cb, string hint = "") {
+        static void registerCmd(InCmd attr, InCmdDelegate cb) {
             object catalog = Traverse.Create(console).Field("concommandCatalog").GetValue();
             var conCommandType = typeof(RoR2.Console).GetNestedType("ConCommand", BindingFlags.NonPublic);
             var conCommandCtor = conCommandType.GetConstructor(Type.EmptyTypes);
 
             var cmd = conCommandCtor.Invoke(new object[0]);
 
-            conCommandType.GetField("flags").SetValue(cmd, ConVarFlags.None);
-            conCommandType.GetField("action").SetValue(cmd, cb);
-            conCommandType.GetField("helpText").SetValue(cmd, hint);
+            conCommandType.GetField("flags").SetValue(cmd, attr.User ? ConVarFlags.None : ConVarFlags.ExecuteOnServer);
+            conCommandType.GetField("action").SetValue(cmd, (RoR2.Console.ConCommandDelegate)((ConCommandArgs args) => {
+                var res = new InCmdResult();
+                var cargs = new InCmdArgs() {
+                    Args = args.userArgs.ToArray(),
+                    Sender = args.sender,
+                    Target = args.sender,
+                };
+                try {
+                    cb(res, cargs);
+                } catch (Exception e) {
+                    res.Error = e.ToString() + "\n" + e.StackTrace;
+                }
+
+                if (args.sender.localUser != null) {
+                    Debug.Log(res.Result.Join(null, "\n"));
+                    if (res.Error != null) Debug.LogWarning(res.Error);
+                } else {
+                    // TODO: Support clients executing commands
+                }
+            }));
+            conCommandType.GetField("helpText").SetValue(cmd, attr.Hint);
 
             catalog.GetType().GetProperty("Item").SetValue(catalog, cmd, new[] {
-                name.ToLower(System.Globalization.CultureInfo.InvariantCulture)
+                attr.Name.ToLower(System.Globalization.CultureInfo.InvariantCulture)
             });
         }
-
-        public static void registerCmd(InCmd cmd, RoR2.Console.ConCommandDelegate cb) {
-            registerCommandDirect(cmd.Name, cb, cmd.Hint);
-        }
-
-        public static void registerVar(InVarName name, InVar var) {
-            registerCommandDirect(name.Name, (ConCommandArgs args) => {
-                if (args.Count == 0) {
-                    Debug.Log(name.Name + " = " + var.Get(args.sender));
+        
+        public static void registerVar(InCmd attr, InVar var) {
+            registerCmd(attr, (InCmdResult res, InCmdArgs args) => {
+                if (args.Length == 0) {
+                    res.Add(attr.Name + " = " + var.Get(args.Sender));
                 } else {
-                    if (args.Count != 1) {
-                        Debug.LogWarning("zero or one arguments expected");
+                    if (args.Length != 1) {
+                        res.Add("zero or one arguments expected");
                     } else {
-                        var.Set(args.sender, args[0]);
-                        Debug.Log(name.Name + " = " + var.Get(args.sender));
+                        var.Set(args.Target, args[0]);
+                        res.Add(attr.Name + " = " + var.Get(args.Target));
                     }
                 }
             });
@@ -165,7 +194,7 @@ namespace InfinityMod {
                         object[] attr = methodInfo?.GetCustomAttributes(false);
                         if (attr != null) foreach (var at in attr) {
                             if (at is InCmd) {
-                                registerCmd(at as InCmd, (RoR2.Console.ConCommandDelegate)Delegate.CreateDelegate(typeof(RoR2.Console.ConCommandDelegate), methodInfo));
+                                registerCmd(at as InCmd, (InCmdDelegate)Delegate.CreateDelegate(typeof(InCmdDelegate), methodInfo));
                             }
                         }
                     }
@@ -173,8 +202,8 @@ namespace InfinityMod {
                     foreach (Type subType in extensions[i].GetType().GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic)) {
                         object[] attr = subType?.GetCustomAttributes(false);
                         if (attr != null) foreach (var at in attr) {
-                            if (at is InVarName) {
-                                registerVar(at as InVarName, (InVar)subType.GetConstructor(Type.EmptyTypes).Invoke(new object[0]));
+                            if (at is InCmd) {
+                                registerVar(at as InCmd, (InVar)subType.GetConstructor(Type.EmptyTypes).Invoke(new object[0]));
                             }
                         }
                     }
